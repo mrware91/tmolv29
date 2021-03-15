@@ -1,0 +1,9 @@
+#!/bin/sh
+
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace online/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace postproc/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace preproc/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace xtc/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace *.ipynb
+
+git add .
