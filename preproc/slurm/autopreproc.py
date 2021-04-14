@@ -1,3 +1,4 @@
+## Contributors: Matt Ware and Taran Driver
 import subprocess
 import requests
 import time
@@ -8,17 +9,18 @@ if runStop == 1:
     runStop = run
 
 def is_run_saved(run, exp=exp):
+    location = "SLAC"
+    url = f"https://pswww.slac.stanford.edu/ws/lgbk/lgbk/{exp}/ws/{run}/files_for_live_mode_at_location"
+    r = requests.get(url, params={"location": location})
+    data = r.json()
+    
     try:
-        location = "SLAC"
-        url = f"https://pswww.slac.stanford.edu/ws/lgbk/lgbk/{exp}/ws/{run}/files_for_live_mode_at_location"
-        r = requests.get(url, params={"location": location})
-        data = r.json()
         if data['success'] and data['value']['all_present'] and data['value']['is_closed']:
             return True
-        else:
-            return False
-    except: #if it doesn't exist it throws an error
-        return False
+    except TypeError as te:
+        if len(data['value'])>=16:
+            return True
+    return False
     
 def submit_bjob(exp, run, numcores=32,  nevent=100000, directory='.', queue='psfehq'):
     cmd = ['./slurmJob.sh', '--cores=%d' % numcores, '--run=%d'%run, '--exp='+exp, '--nevent=%d' % nevent,'--directory='+directory, '--python=preproc.py', '--queue=%s' % queue]

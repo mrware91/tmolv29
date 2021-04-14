@@ -1,3 +1,4 @@
+## Contributors: Matt Ware
 #!/bin/bash
 source /cds/sw/ds/ana/conda2/manage/bin/psconda.sh
 

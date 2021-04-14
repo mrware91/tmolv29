@@ -1,3 +1,4 @@
+## Contributors: Matt Ware
 # Standard Python imports
 import psana
 import numpy as np
@@ -200,10 +201,10 @@ def H5Writer(exp, runNumber, detectors, analysisDict, outputDir, ncores, nread=1
             if types is None:
                 types = theAnalysis.outTypes
                 typesEpics = epicsAnalysis.outTypes
-            checkPass = checkTypes(types, H5Det) & checkTypes(typesEpics, H5Epics)
-            if not checkPass:
-                nskip += 1
-                continue
+#             checkPass = checkTypes(types, H5Det) & checkTypes(typesEpics, H5Epics)
+#             if not checkPass:
+#                 nskip += 1
+#                 continue
             
             smd.event(evt, **H5Det, **H5Epics)
         else:
@@ -240,7 +241,7 @@ def H5Writer(exp, runNumber, detectors, analysisDict, outputDir, ncores, nread=1
         print(rank,size)
         print('Generating final H5 ...')
         reformatH5( truetempout, out )
-    else:
+    elif (size==1):
         print('Generating final H5 ...')
         reformatH5(tempout, out)
         

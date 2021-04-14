@@ -1,3 +1,4 @@
+# Contributors: Elio Champenois
 #!/bin/bash
 #source /cds/sw/ds/ana/conda2/manage/bin/psconda.sh #this sets environment for psana2. note psana2 not compatible with psana(1)
 

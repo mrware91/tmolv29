@@ -1,3 +1,5 @@
+
+## Contributors: Matt Ware
 import argparse
 
 def initArg( args, stringSpec , valType ):

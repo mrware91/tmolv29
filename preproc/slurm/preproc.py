@@ -1,3 +1,4 @@
+## Contributors: Matt Ware
 import numpy as np
 import psana as ps
 import sys

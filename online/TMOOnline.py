@@ -1,3 +1,4 @@
+# Contributors: Matt Ware
 # Standard Python imports
 import psana
 import numpy as np

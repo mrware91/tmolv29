@@ -1,3 +1,4 @@
+# Contributors: Matt Ware
 rememberShots = 1200
 
 
@@ -157,7 +158,7 @@ def updatetranslodiode(data,detectors,cutoff=cutoff,maxShots=1200):
     xrayOff=evr[161]
     
     wf=fix_wf_baseline(detectors['wfs']['shotData'][9][0].astype(float))
-    wfsum=np.sum(wf[1250:1400]) 
+    wfsum=np.sum(wf[1250:1400])
     if (~xrayOff)&(wfsum>cutoff):
         data['on'].append( wfsum / data['off'] )
         data['delay'].append(detectors['vitaraDelay']['shotData'])
@@ -177,8 +178,8 @@ def plottranslodiode(data,nevt):
     xeng=np.array(data['xeng']).astype(float)
     delay=np.array(data['delay']).astype(float)
     
-    plotXY(nevt, plotName='translodiode', 
-               x=t,y=y, 
+    plotXY(nevt, plotName='translodiode',
+               x=t,y=y,
                plotTitle='transmission on diode vs lab time', xlabel='shot #',ylabel='diode integrated / bkgd',formats='-')
 
     plotXY(nevt, plotName='takahiro',x=xeng,y=y,plotTitle='diode/bkgd vs. xray pulse energy',xlabel='xray pulse energy',ylabel='diode/bkgd',formats='.')
@@ -247,8 +248,8 @@ def plottt(data,nevt):
         implt = data['imlast']/data['imsumbg']
         projplt = implt[:,200:500].mean(1)
         projplt = projplt / np.nanmean(projplt)
-        plotXY(nevt, plotName='tt_proj', 
-               x=np.arange(projplt.size),y=projplt, 
+        plotXY(nevt, plotName='tt_proj',
+               x=np.arange(projplt.size),y=projplt,
                plotTitle='timetool bkdivproj', xlabel='pixel',ylabel='tt / bkgd',formats='-')
         
         implt = implt / np.nanmean(implt)
@@ -262,7 +263,7 @@ def plottt(data,nevt):
 
 
 
-    return data 
+    return data
 
 ########################################################################
 # wflodiode - Single shot ion tof
@@ -364,7 +365,7 @@ def updatepbasex(data,detectors):
     return data
     
 def plotpbasex(data,nevt):
-    plotName = 'pbasex'     
+    plotName = 'pbasex'
     im2inv=data['imsum']/float(data['shots'])-data['imsumbg']/float(data['shotsbg']) #vmihits
     bs=2 #must be integer
     folded = resizeFolded(foldQuadrant(bin2d(im2inv, bin_sizes=(2,2)), int(x0/float(bs)), int(y0/float(bs)), [1,1,1,1]), 512)
@@ -374,7 +375,7 @@ def plotpbasex(data,nevt):
                                alpha*np.arange(512)[::bs]**2,
                                out['IE'][:int(512/bs)])
     psmon.publish.send(plotName, aplot)
-    return data    
+    return data
    
 
 ########################################################################
@@ -659,7 +660,7 @@ def plotwf0(data,nevt):
 #             ktofrollave.append(wf6)
 
 # ########################################################################
-# # wfgoose 
+# # wfgoose
 # ########################################################################
 def updatewfgoose(data,detectors,nshots=32000, ROI=(42.8,43.2)): # old roi: 5.5,6
     pe=detectors['pulseEnergy']['shotData']
@@ -862,7 +863,7 @@ def updateVLSgauss(data,detectors):
     
     if detectors['vls']['shotData'] is not None:
         arr = np.sum(detectors['vls']['shotData'],0)
-    else: 
+    else:
         return data
     
     try:
@@ -872,7 +873,7 @@ def updateVLSgauss(data,detectors):
         pass
     return data
     
-def plotVLSgauss(data,nevt):    
+def plotVLSgauss(data,nevt):
     t = np.arange(len(data))
     y = np.array(data).astype(float)
 
@@ -903,7 +904,7 @@ def updateXAS(data,detectors, ROI=(42.2,43.5), phEngs=(490,600), rememberShots=5
     pe = detectors['pulseEnergy']['shotData']
     phe = detectors['photonEnergy']['shotData']
     
-#     pe = 1man 
+#     pe = 1man
     
     testForNone = [xrayOff,vls,itof,pe,phe]
     for idx,arr in enumerate(testForNone):
@@ -969,7 +970,7 @@ def plotXAS(data,nevt):
     plotXY(nevt, plotName='XASwPE',x=data['phe'],y=data['nITOF'],ylabel='iToF ROI/pulse energy',xlabel='Photon energy from system',plotTitle='XAS using photon energy',formats='.')
     plotXY(nevt, plotName='VLSvPE',x=data['pe'],y=data['vlsSum'],xlabel='pulse energy',ylabel='Integrated VLS signal',plotTitle='VLS, pulse energy correlation',formats='.')
     
-    NX,NY = data['VLSvPHE'].shape 
+    NX,NY = data['VLSvPHE'].shape
     plotImage(nevt, plotName='VLSvPHE', plotTitle='2D histogram of VLS CoM vs. system photon energy', im=data['VLSvPHE'],aspect_ratio=float(NY)/float(NX))
 
     # histogram
@@ -1100,7 +1101,7 @@ def updatetimetool(data,detectors,rememberShots=6000):
 
     return data
 
-def plottimetool(data,nevt): 
+def plottimetool(data,nevt):
     if data['nshots'] < 10:
         return data
     if data['ref'] is None:
@@ -1143,8 +1144,8 @@ def updateknifeedge(data,detectors,rememberShots=1200):
         data['spx']=deque(maxlen=rememberShots)
         data['diode']=deque(maxlen=rememberShots)
     
-    wf=fix_wf_baseline(detectors['wfs']['shotData'][9][0].astype(float))    
-    diode = np.sum(wf[1290:2000]) 
+    wf=fix_wf_baseline(detectors['wfs']['shotData'][9][0].astype(float))
+    diode = np.sum(wf[1290:2000])
     spx = detectors['samplePaddleX']['shotData']
     if (spx is None) | (diode is None):
         return data

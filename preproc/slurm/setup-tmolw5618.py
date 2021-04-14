@@ -1,3 +1,4 @@
+
 ## Contributors: Matt Ware
 import numpy as np
 import sys
@@ -57,8 +58,7 @@ from FFT_peakfinder import FFTfind_fixed
 analysis = {}
 analysis['vitaraDelay'] = {'function':lambda x: x, 'detectorKey':'vitaraDelay'}
 analysis['evrs'] = {'detectorKey':'evrs'}
-# analysis['vls1D'] = {'function': lambda x: x, 'detectorKey':'vls'}
-analysis['vls1D'] = {'function': lambda x: x.flatten(), 'detectorKey':'vls'}
+analysis['vls1D'] = {'function': lambda x: x, 'detectorKey':'vls'}
 analysis['pulseEnergy-gmd'] = {'detectorKey':'gmd'}
 analysis['pulseEnergy-xgmd'] = {'detectorKey':'xgmd'}
 analysis['photonEnergy'] = {'detectorKey':'photonEnergy'}
@@ -126,21 +126,21 @@ def cfdFixed(hsd,nmax=1000):
     
     return timesF, amplitudesF
 # FFTfind_fixed(hsd, nmax=1000)
-analysis['mb-hitfinder-t'] = {'function': lambda x: cfdFixed(x)[0], 'detectorKey':'hsd'}
+analysis['mb-hitfinder-t'] = {'function': lambda x: cfdFixed(x)[0]*1e6, 'detectorKey':'hsd'}
 analysis['mb-hitfinder-ampl'] = {'function': lambda x: cfdFixed(x)[1], 'detectorKey':'hsd'}
-analysis['mb-FFT-hitfinder-t'] = {'function': lambda x: FFTfind_fixed(x)[0], 'detectorKey':'hsd'}
+analysis['mb-FFT-hitfinder-t'] = {'function': lambda x: FFTfind_fixed(x)[0]*1e6, 'detectorKey':'hsd'}
 analysis['mb-FFT-hitfinder-ampl'] = {'function': lambda x: FFTfind_fixed(x)[1], 'detectorKey':'hsd'}
 
-analysis['mb-time-subset'] = {'function': lambda x: x[0]['times'].astype(float)[:10000], 'detectorKey':'hsd'}
+analysis['mb-time-subset'] = {'function': lambda x: x[0]['times'].astype(float)[:10000]*1e6, 'detectorKey':'hsd'}
 analysis['mb-waveform-subset'] = {'function': lambda x: fix_wf_baseline(x[0][0].astype(float))[:10000], 'detectorKey':'hsd'}
 
 resample = lambda x, rebin_factor: x.reshape(-1, rebin_factor).mean(1)
-analysis['mb-time-downsample'] = {'function': lambda x: resample(x[0]['times'],10), 'detectorKey':'hsd'}
+analysis['mb-time-downsample'] = {'function': lambda x: resample(x[0]['times'],10)*1e6, 'detectorKey':'hsd'}
 analysis['mb-waveform-downsample'] = {'function': lambda x: resample(x[0][0],10), 'detectorKey':'hsd'}
 analysis['diode-waveform-subset'] = {'function': lambda x: x[9][0].astype(float)[:5000], 'detectorKey':'hsd'}
-analysis['diode-time-subset'] = {'function': lambda x: x[9]['times'].astype(float)[:5000], 'detectorKey':'hsd'}
+analysis['diode-time-subset'] = {'function': lambda x: x[9]['times'].astype(float)[:5000]*1e6, 'detectorKey':'hsd'}
 analysis['diode-waveform-downsample'] = {'function': lambda x: resample(x[9][0],10), 'detectorKey':'hsd'}
-analysis['diode-time-downsample'] = {'function': lambda x: resample(x[9]['times'],10), 'detectorKey':'hsd'}
+analysis['diode-time-downsample'] = {'function': lambda x: resample(x[9]['times'],10)*1e6, 'detectorKey':'hsd'}
 
 analysis['atm-proj1'] =  {'function': lambda x: np.sum(x[360:500,:],axis=0), 'detectorKey':'tmo_atmopal'}
 analysis['atm-proj2'] =  {'function': lambda x: np.sum(x[0:240,:],axis=0), 'detectorKey':'tmo_atmopal'}
